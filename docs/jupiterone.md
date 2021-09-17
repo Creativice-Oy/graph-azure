@@ -173,7 +173,7 @@ NOTE: ALL OF THE FOLLOWING DOCUMENTATION IS GENERATED USING THE
 "j1-integration document" COMMAND. DO NOT EDIT BY HAND! PLEASE SEE THE DEVELOPER
 DOCUMENTATION FOR USAGE INFORMATION:
 
-https://github.com/JupiterOne/sdk/blob/master/docs/integrations/development.md
+https://github.com/JupiterOne/sdk/blob/main/docs/integrations/development.md
 ********************************************************************************
 -->
 
@@ -219,6 +219,8 @@ The following entities are created:
 | [RM] Gallery                                   | `azure_gallery`                                   | `Repository`                       |
 | [RM] Image                                     | `azure_image`                                     | `Image`                            |
 | [RM] Key Vault                                 | `azure_keyvault_service`                          | `Service`                          |
+| [RM] Key Vault Key                             | `azure_keyvault_key`                              | `Key`                              |
+| [RM] Key Vault Secret                          | `azure_keyvault_secret`                           | `Secret`                           |
 | [RM] Load Balancer                             | `azure_lb`                                        | `Gateway`                          |
 | [RM] Location                                  | `azure_location`                                  | `Site`                             |
 | [RM] Management Group                          | `azure_management_group`                          | `Group`                            |
@@ -279,7 +281,7 @@ The following entities are created:
 
 ### Relationships
 
-The following relationships are created/mapped:
+The following relationships are created:
 
 | Source Entity `_type`              | Relationship `_class` | Target Entity `_type`                             |
 | ---------------------------------- | --------------------- | ------------------------------------------------- |
@@ -311,6 +313,8 @@ The following relationships are created/mapped:
 | `azure_user_group`                 | **HAS**               | `azure_group_member`                              |
 | `azure_user_group`                 | **HAS**               | `azure_user`                                      |
 | `azure_keyvault_service`           | **ALLOWS**            | `ANY_PRINCIPAL`                                   |
+| `azure_keyvault_service`           | **CONTAINS**          | `azure_keyvault_key`                              |
+| `azure_keyvault_service`           | **CONTAINS**          | `azure_keyvault_secret`                           |
 | `azure_lb`                         | **CONNECTS**          | `azure_nic`                                       |
 | `azure_location`                   | **HAS**               | `azure_network_watcher`                           |
 | `azure_management_group`           | **CONTAINS**          | `azure_management_group`                          |
