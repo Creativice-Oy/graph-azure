@@ -49,10 +49,12 @@ export async function fetchStorageAccounts(
 
     const storageBlobServiceProperties = await storageAccountServiceClient.getBlobServiceProperties();
     const storageQueueServiceProperties = await storageAccountServiceClient.getQueueServiceProperties();
+    const storageTableServiceProperties = await storageAccountServiceClient.getTableServiceProperties();
 
     return {
       blob: storageBlobServiceProperties,
       queue: storageQueueServiceProperties,
+      table: storageTableServiceProperties,
     };
   }
   const client = new StorageClient(instance.config, logger);
