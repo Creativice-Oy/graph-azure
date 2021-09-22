@@ -64,7 +64,6 @@ export async function fetchStorageAccounts(
   const keyVaultEntityMap = await buildKeyVaultEntityMap(executionContext);
 
   await client.iterateStorageAccounts(async (storageAccount) => {
-    console.log('name', storageAccount.id);
     let isAccessKeyRegenerated = false;
     await monitorClient.iterateActivityLogs(
       storageAccount.id as string,
@@ -74,10 +73,6 @@ export async function fetchStorageAccounts(
             'Microsoft.Storage/storageAccounts/regenerateKey/action' &&
             log.status?.value === 'Succeeded') ||
           isAccessKeyRegenerated;
-        console.log(
-          `${log.authorization?.action} ${log.status?.value}`,
-          isAccessKeyRegenerated,
-        );
       },
     );
 
