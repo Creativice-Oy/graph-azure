@@ -39,9 +39,7 @@ it('auth error', async () => {
     await validateInvocation(executionContext);
   };
 
-  await expect(exec).rejects.toThrow(
-    "AADSTS90002: Tenant 'invalid' not found. This may happen if there are no active subscriptions for the tenant. Check to make sure you have the correct tenant ID. Check with your subscription administrator.",
-  );
+  await expect(exec).rejects.toThrow(/AADSTS90002: Tenant 'invalid' not found[a-zA-Z]*/);
 });
 
 describe('validateInvocation recordings', () => {
