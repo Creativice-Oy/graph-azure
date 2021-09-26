@@ -28,7 +28,11 @@ afterEach(async () => {
 describe('rm-storage-accounts', () => {
   async function getSetupEntities() {
     const setupContext = createMockAzureStepExecutionContext({
-      instanceConfig: configFromEnv,
+      instanceConfig: {
+        ...configFromEnv,
+        directoryId: '19ae0f99-6fc6-444b-bd54-97504efc66ad',
+        subscriptionId: '193f89dc-6225-4a80-bacb-96b32fbf6dd0',
+      },
     });
 
     await fetchAccount(setupContext);
@@ -54,15 +58,25 @@ describe('rm-storage-accounts', () => {
       directory: __dirname,
       name: 'resource-manager-step-storage-accounts',
       options: {
-        matchRequestsBy: getMatchRequestsBy({ config: configFromEnv }),
+        matchRequestsBy: getMatchRequestsBy({
+          config: configFromEnv,
+          options: {
+            url: {
+              query: false,
+            },
+          },
+        }),
       },
     });
 
     const { accountEntity, keyVaultEntity } = await getSetupEntities();
 
-    console.log(keyVaultEntity, accountEntity);
     const context = createMockAzureStepExecutionContext({
-      instanceConfig: configFromEnv,
+      instanceConfig: {
+        ...configFromEnv,
+        directoryId: '19ae0f99-6fc6-444b-bd54-97504efc66ad',
+        subscriptionId: '193f89dc-6225-4a80-bacb-96b32fbf6dd0',
+      },
       entities: [keyVaultEntity],
       setData: {
         [ACCOUNT_ENTITY_TYPE]: accountEntity,
