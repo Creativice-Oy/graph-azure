@@ -166,6 +166,7 @@ describe('createStorageAccountEntity', () => {
       queueAnalyticsLoggingReadEnabled: true,
       queueAnalyticsLoggingWriteEnabled: true,
       queueAnalyticsLoggingDeleteEnabled: true,
+      isAccessKeyRegenerated: false,
     };
 
     const storageAccountEntity = createStorageAccountEntity(

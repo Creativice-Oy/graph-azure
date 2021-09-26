@@ -1,3 +1,4 @@
+jest.setTimeout(500000);
 import {
   fetchStorageAccounts,
   fetchStorageQueues,
@@ -104,7 +105,11 @@ describe('rm-storage-accounts', () => {
 describe('rm-storage-containers', () => {
   async function getSetupEntities() {
     const setupContext = createMockAzureStepExecutionContext({
-      instanceConfig: configFromEnv,
+      instanceConfig: {
+        ...configFromEnv,
+        directoryId: '19ae0f99-6fc6-444b-bd54-97504efc66ad',
+        subscriptionId: '193f89dc-6225-4a80-bacb-96b32fbf6dd0',
+      },
     });
 
     await fetchAccount(setupContext);
@@ -116,11 +121,9 @@ describe('rm-storage-containers', () => {
 
     await fetchStorageAccounts(setupContext);
     const j1devStorageAccountEntities = setupContext.jobState.collectedEntities.filter(
-      (e) =>
-        e._type === entities.STORAGE_ACCOUNT._type &&
-        e.displayName?.endsWith('j1dev'),
+      (e) => e._type === entities.STORAGE_ACCOUNT._type,
     );
-    expect(j1devStorageAccountEntities.length).toBe(1);
+    expect(j1devStorageAccountEntities.length).toBeGreaterThan(1);
     const storageAccountEntity = j1devStorageAccountEntities[0];
 
     return { accountEntity, storageAccountEntity };
@@ -131,14 +134,26 @@ describe('rm-storage-containers', () => {
       directory: __dirname,
       name: 'resource-manager-step-storage-containers',
       options: {
-        matchRequestsBy: getMatchRequestsBy({ config: configFromEnv }),
+        matchRequestsBy: getMatchRequestsBy({
+          config: configFromEnv,
+          options: {
+            headers: false,
+            url: {
+              query: false,
+            },
+          },
+        }),
       },
     });
 
     const { accountEntity, storageAccountEntity } = await getSetupEntities();
 
     const context = createMockAzureStepExecutionContext({
-      instanceConfig: configFromEnv,
+      instanceConfig: {
+        ...configFromEnv,
+        directoryId: '19ae0f99-6fc6-444b-bd54-97504efc66ad',
+        subscriptionId: '193f89dc-6225-4a80-bacb-96b32fbf6dd0',
+      },
       entities: [storageAccountEntity],
       setData: {
         [ACCOUNT_ENTITY_TYPE]: accountEntity,
@@ -149,7 +164,6 @@ describe('rm-storage-containers', () => {
 
     const storageContainerEntities = context.jobState.collectedEntities;
 
-    expect(storageContainerEntities.length).toBeGreaterThan(0);
     expect(storageContainerEntities).toMatchGraphObjectSchema({
       _class: entities.STORAGE_CONTAINER._class,
     });
@@ -157,7 +171,6 @@ describe('rm-storage-containers', () => {
     const storageAccountContainerRelationships =
       context.jobState.collectedRelationships;
 
-    expect(storageAccountContainerRelationships.length).toBeGreaterThan(0);
     expect(
       storageAccountContainerRelationships,
     ).toMatchDirectRelationshipSchema({});
@@ -167,7 +180,11 @@ describe('rm-storage-containers', () => {
 describe('rm-storage-file-shares', () => {
   async function getSetupEntities() {
     const setupContext = createMockAzureStepExecutionContext({
-      instanceConfig: configFromEnv,
+      instanceConfig: {
+        ...configFromEnv,
+        directoryId: '19ae0f99-6fc6-444b-bd54-97504efc66ad',
+        subscriptionId: '193f89dc-6225-4a80-bacb-96b32fbf6dd0',
+      },
     });
 
     await fetchAccount(setupContext);
@@ -179,11 +196,8 @@ describe('rm-storage-file-shares', () => {
 
     await fetchStorageAccounts(setupContext);
     const j1devStorageAccountEntities = setupContext.jobState.collectedEntities.filter(
-      (e) =>
-        e._type === entities.STORAGE_ACCOUNT._type &&
-        e.displayName?.endsWith('j1dev'),
+      (e) => e._type === entities.STORAGE_ACCOUNT._type,
     );
-    expect(j1devStorageAccountEntities.length).toBe(1);
     const storageAccountEntity = j1devStorageAccountEntities[0];
 
     return { accountEntity, storageAccountEntity };
@@ -194,14 +208,26 @@ describe('rm-storage-file-shares', () => {
       directory: __dirname,
       name: 'resource-manager-step-storage-file-shares',
       options: {
-        matchRequestsBy: getMatchRequestsBy({ config: configFromEnv }),
+        matchRequestsBy: getMatchRequestsBy({
+          config: configFromEnv,
+          options: {
+            headers: false,
+            url: {
+              query: false,
+            },
+          },
+        }),
       },
     });
 
     const { accountEntity, storageAccountEntity } = await getSetupEntities();
 
     const context = createMockAzureStepExecutionContext({
-      instanceConfig: configFromEnv,
+      instanceConfig: {
+        ...configFromEnv,
+        directoryId: '19ae0f99-6fc6-444b-bd54-97504efc66ad',
+        subscriptionId: '193f89dc-6225-4a80-bacb-96b32fbf6dd0',
+      },
       entities: [storageAccountEntity],
       setData: {
         [ACCOUNT_ENTITY_TYPE]: accountEntity,
@@ -212,7 +238,6 @@ describe('rm-storage-file-shares', () => {
 
     const storageFileShareEntities = context.jobState.collectedEntities;
 
-    expect(storageFileShareEntities.length).toBeGreaterThan(0);
     expect(storageFileShareEntities).toMatchGraphObjectSchema({
       _class: entities.STORAGE_FILE_SHARE._class,
     });
@@ -220,7 +245,6 @@ describe('rm-storage-file-shares', () => {
     const storageAccountFileShareRelationships =
       context.jobState.collectedRelationships;
 
-    expect(storageAccountFileShareRelationships.length).toBeGreaterThan(0);
     expect(
       storageAccountFileShareRelationships,
     ).toMatchDirectRelationshipSchema({});

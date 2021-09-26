@@ -245,6 +245,7 @@ export async function fetchStorageContainers(
           skuTier: storageAccount.sku?.tier as SkuTier,
         },
         async (container) => {
+          console.log('2');
           const containerEntity = createStorageContainerEntity(
             webLinker,
             storageAccountEntity,
