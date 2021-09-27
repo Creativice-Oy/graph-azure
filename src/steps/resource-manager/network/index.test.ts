@@ -1339,10 +1339,13 @@ describe('rm-network-private-endpoint-resource-relationships', () => {
     const privateEndpointEntities = context.jobState.collectedEntities.filter(
       (e) => e._type === NetworkEntities.PRIVATE_ENDPOINT._type,
     );
-    expect(privateEndpointEntities.length).toBeGreaterThan(0);
+    const examplePrivateEndpointEntities = privateEndpointEntities.filter(
+      (e) => e.name === 'private-endpoint',
+    );
+    expect(examplePrivateEndpointEntities).toHaveLength(1);
 
     return {
-      privateEndpointEntity: privateEndpointEntities[0],
+      privateEndpointEntity: examplePrivateEndpointEntities[0],
       storageAccountEntities,
     };
   }
@@ -1389,7 +1392,7 @@ describe('rm-network-private-endpoint-resource-relationships', () => {
     expect(
       privateEndpointResourceRelationships,
     ).toMatchDirectRelationshipSchema({});
-  }, 1500000);
+  }, 15000);
 });
 
 describe('rm-network-private-endpoint-nic-relationships', () => {

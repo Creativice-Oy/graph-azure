@@ -45,7 +45,9 @@ describe('rm-storage-accounts', () => {
     await fetchKeyVaults(setupContext);
 
     const j1devKeyVaultEntities = setupContext.jobState.collectedEntities.filter(
-      (e) => e._type === KEY_VAULT_SERVICE_ENTITY_TYPE,
+      (e) =>
+        e._type === KEY_VAULT_SERVICE_ENTITY_TYPE &&
+        e.displayName?.includes('key-vault-1'),
     );
     expect(j1devKeyVaultEntities.length).toBeGreaterThan(0);
     const keyVaultEntity = j1devKeyVaultEntities[0];
@@ -120,9 +122,11 @@ describe('rm-storage-containers', () => {
 
     await fetchStorageAccounts(setupContext);
     const j1devStorageAccountEntities = setupContext.jobState.collectedEntities.filter(
-      (e) => e._type === entities.STORAGE_ACCOUNT._type,
+      (e) =>
+        e._type === entities.STORAGE_ACCOUNT._type &&
+        e.displayName?.includes('examplestorage'),
     );
-    expect(j1devStorageAccountEntities.length).toBeGreaterThan(1);
+    expect(j1devStorageAccountEntities.length).toBe(1);
     const storageAccountEntity = j1devStorageAccountEntities[0];
 
     return { accountEntity, storageAccountEntity };
@@ -195,8 +199,11 @@ describe('rm-storage-file-shares', () => {
 
     await fetchStorageAccounts(setupContext);
     const j1devStorageAccountEntities = setupContext.jobState.collectedEntities.filter(
-      (e) => e._type === entities.STORAGE_ACCOUNT._type,
+      (e) =>
+        e._type === entities.STORAGE_ACCOUNT._type &&
+        e.displayName?.includes('examplestorage'),
     );
+
     const storageAccountEntity = j1devStorageAccountEntities[0];
 
     return { accountEntity, storageAccountEntity };
