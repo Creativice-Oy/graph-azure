@@ -171,6 +171,7 @@ describe('createKeyVaultSecretEntity', () => {
       enabled: true,
       expiresOn: parseTimePropertyValue(date),
       createdOn: undefined,
+      updatedOn: undefined,
       managed: undefined,
       notBefore: undefined,
       recoveryLevel: undefined,
