@@ -4,6 +4,7 @@ import { createMockAzureStepExecutionContext } from '../../../../test/createMock
 import { setupAzureRecording } from '../../../../test/helpers/recording';
 import { configFromEnv } from '../../../../test/integrationInstanceConfig';
 import { ACCOUNT_ENTITY_TYPE } from '../../active-directory';
+import { ContainerServicesEntities } from './constants';
 
 let recording: Recording;
 
@@ -44,7 +45,11 @@ test(
     await fetchClusters(context);
 
     expect(context.jobState.collectedEntities.length).toBeGreaterThan(0);
-    expect(context.jobState.collectedEntities).toMatchGraphObjectSchema({
+    expect(
+      context.jobState.collectedEntities.filter(
+        (e) => e._type === ContainerServicesEntities.SERVICE._type,
+      ),
+    ).toMatchGraphObjectSchema({
       _class: 'Cluster',
       schema: {
         additionalProperties: false,
@@ -71,6 +76,44 @@ test(
           enableRBAC: { type: 'boolean' },
           enablePodSecurityPolicy: { type: 'boolean' },
           disableLocalAccounts: { type: 'boolean' },
+        },
+      },
+    });
+
+    expect(
+      context.jobState.collectedEntities.filter(
+        (e) => e._type === ContainerServicesEntities.NODE_POOL._type,
+      ),
+    ).toMatchGraphObjectSchema({
+      _class: 'Group',
+      schema: {
+        additionalProperties: false,
+        properties: {
+          _type: { const: 'azure_container_services_node_pool' },
+          _key: { type: 'string' },
+          _class: { type: 'array', items: { const: 'Group' } },
+          id: { type: 'string' },
+          name: { type: 'string' },
+          displayName: { type: 'string' },
+          webLink: { type: 'string' },
+          _rawData: { type: 'array', items: { type: 'object' } },
+          count: { type: 'number' },
+          vmSize: { type: 'string' },
+          vnetSubnetID: { type: 'string' },
+          podSubnetID: { type: 'string' },
+          maxPods: { type: 'number' },
+          osType: { type: 'string' },
+          maxCount: { type: 'number' },
+          minCount: { type: 'number' },
+          enableAutoScaling: { type: 'boolean' },
+          agentPoolType: { type: 'string' },
+          mode: { type: 'string' },
+          provisioningState: { type: 'string' },
+          availabilityZones: { type: 'array', items: { type: 'string' } },
+          enableNodePublicIP: { type: 'boolean' },
+          enableEncryptionAtHost: { type: 'boolean' },
+          enableUltraSSD: { type: 'boolean' },
+          enableFIPS: { type: 'boolean' },
         },
       },
     });

@@ -9,6 +9,11 @@ export const ContainerServicesEntities = {
     _class: ['Cluster'],
     resourceName: '[RM] Container Services Cluster',
   },
+  NODE_POOL: {
+    _type: 'azure_container_services_node_pool',
+    _class: ['Group'],
+    resourceName: '[RM] Container Services Node Pool',
+  },
 };
 
 export const ContainerServicesRelationships = {

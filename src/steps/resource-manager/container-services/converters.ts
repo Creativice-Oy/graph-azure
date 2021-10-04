@@ -38,3 +38,39 @@ export function createClusterEntitiy(
     },
   });
 }
+
+export function createNodePoolEntity(
+  webLinker: AzureWebLinker,
+  data: ContainerServiceModels.AgentPool,
+): Entity {
+  return createIntegrationEntity({
+    entityData: {
+      source: data,
+      assign: {
+        _key: data.id as string,
+        _type: ContainerServicesEntities.NODE_POOL._type,
+        _class: ContainerServicesEntities.NODE_POOL._class,
+        id: data.id,
+        name: data.name,
+        count: data.count,
+        vmSize: data.vmSize,
+        vnetSubnetID: data.vnetSubnetID,
+        podSubnetID: data.podSubnetID,
+        maxPods: data.maxPods,
+        osType: data.osType,
+        maxCount: data.maxCount,
+        minCount: data.minCount,
+        enableAutoScaling: data.enableAutoScaling,
+        agentPoolType: data.agentPoolType,
+        mode: data.mode,
+        provisioningState: data.provisioningState,
+        availabilityZones: data.availabilityZones,
+        enableNodePublicIP: data.enableNodePublicIP,
+        enableEncryptionAtHost: data.enableEncryptionAtHost,
+        enableUltraSSD: data.enableUltraSSD,
+        enableFIPS: data.enableFIPS,
+        webLink: webLinker.portalResourceUrl(data.id),
+      },
+    },
+  });
+}

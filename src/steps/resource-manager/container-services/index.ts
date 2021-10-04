@@ -12,7 +12,7 @@ import {
   ContainerServicesRelationships,
   STEP_RM_CONTAINER_SERVICES_CLUSTERS,
 } from './constants';
-import { createClusterEntitiy } from './converters';
+import { createClusterEntitiy, createNodePoolEntity } from './converters';
 
 export async function fetchClusters(
   executionContext: IntegrationStepContext,
@@ -25,7 +25,10 @@ export async function fetchClusters(
   await client.iterateClusters(async (cluster) => {
     const clusterEntity = createClusterEntitiy(webLinker, cluster);
     await jobState.addEntity(clusterEntity);
-
+    cluster.agentPoolProfiles?.map(async (agentPoolProfile) => {
+      const nodePoolEntity = createNodePoolEntity(webLinker, agentPoolProfile);
+      await jobState.addEntity(nodePoolEntity);
+    });
     await createResourceGroupResourceRelationship(
       executionContext,
       clusterEntity,
@@ -39,7 +42,10 @@ export const containerServicesSteps: Step<
   {
     id: STEP_RM_CONTAINER_SERVICES_CLUSTERS,
     name: 'Fetch Container Services Clusters',
-    entities: [ContainerServicesEntities.SERVICE],
+    entities: [
+      ContainerServicesEntities.SERVICE,
+      ContainerServicesEntities.NODE_POOL,
+    ],
     relationships: [ContainerServicesRelationships.RESOURCE_GROUP_HAS_SERVICE],
     dependsOn: [STEP_AD_ACCOUNT],
     executionHandler: fetchClusters,

@@ -207,6 +207,7 @@ The following entities are created:
 | [RM] Container Registry                        | `azure_container_registry`                        | `DataStore`                        |
 | [RM] Container Registry Webhook                | `azure_container_registry_webhook`                | `ApplicationEndpoint`              |
 | [RM] Container Services Cluster                | `azure_container_services_cluster`                | `Cluster`                          |
+| [RM] Container Services Node Pool              | `azure_container_services_node_pool`              | `Group`                            |
 | [RM] Container Volume                          | `azure_container_volume`                          | `Disk`                             |
 | [RM] Cosmos DB Account                         | `azure_cosmosdb_account`                          | `Account`, `Service`               |
 | [RM] Cosmos DB Database                        | `azure_cosmosdb_sql_database`                     | `Database`, `DataStore`            |
