@@ -4,7 +4,10 @@ import { createMockAzureStepExecutionContext } from '../../../../test/createMock
 import { setupAzureRecording } from '../../../../test/helpers/recording';
 import { configFromEnv } from '../../../../test/integrationInstanceConfig';
 import { ACCOUNT_ENTITY_TYPE } from '../../active-directory';
-import { ContainerServicesEntities } from './constants';
+import {
+  ContainerServicesEntities,
+  ContainerServicesRelationships,
+} from './constants';
 
 let recording: Recording;
 
@@ -47,7 +50,7 @@ test(
     expect(context.jobState.collectedEntities.length).toBeGreaterThan(0);
     expect(
       context.jobState.collectedEntities.filter(
-        (e) => e._type === ContainerServicesEntities.SERVICE._type,
+        (e) => e._type === ContainerServicesEntities.CLUSTER._type,
       ),
     ).toMatchGraphObjectSchema({
       _class: 'Cluster',
@@ -114,6 +117,38 @@ test(
           enableEncryptionAtHost: { type: 'boolean' },
           enableUltraSSD: { type: 'boolean' },
           enableFIPS: { type: 'boolean' },
+        },
+      },
+    });
+
+    expect(
+      context.jobState.collectedRelationships.filter(
+        (e) =>
+          e._type ===
+          ContainerServicesRelationships.RESOURCE_GROUP_HAS_CLUSTER._type,
+      ),
+    ).toMatchDirectRelationshipSchema({
+      schema: {
+        properties: {
+          _class: { const: 'HAS' },
+          _type: {
+            const: 'azure_resource_group_has_container_services_cluster',
+          },
+        },
+      },
+    });
+
+    expect(
+      context.jobState.collectedRelationships.filter(
+        (e) =>
+          e._type ===
+          ContainerServicesRelationships.CLUSTER_HAS_NODE_POOL._type,
+      ),
+    ).toMatchDirectRelationshipSchema({
+      schema: {
+        properties: {
+          _class: { const: 'HAS' },
+          _type: { const: 'azure_container_services_cluster_has_node_pool' },
         },
       },
     });

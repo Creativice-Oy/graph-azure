@@ -302,6 +302,7 @@ The following relationships are created:
 | `azure_container_group`            | **HAS**               | `azure_container`                                 |
 | `azure_container_group`            | **HAS**               | `azure_container_volume`                          |
 | `azure_container_registry`         | **HAS**               | `azure_container_registry_webhook`                |
+| `azure_container_services_cluster` | **HAS**               | `azure_container_services_node_pool`              |
 | `azure_container`                  | **USES**              | `azure_container_volume`                          |
 | `azure_container_volume`           | **USES**              | `azure_storage_file_share`                        |
 | `azure_cosmosdb_account`           | **HAS**               | `azure_cosmosdb_sql_database`                     |
