@@ -97,16 +97,19 @@ export class MonitorClient extends Client {
     });
   }
 
-  public async iterateActivityLogs(
+  public async iterateActivityLogsFromPreviousNDays(
     resourceId: string,
     callback: (e: EventData) => void | Promise<void>,
-    dayRange?: number,
+    options?: {
+      dayRange?: number;
+      select?: string;
+    },
   ) {
     const serviceClient = await this.getAuthenticatedServiceClient(
       MonitorManagementClient,
     );
 
-    const startDate = formatISO(subDays(new Date(), dayRange || 90));
+    const startDate = formatISO(subDays(new Date(), options?.dayRange || 90));
     const endDate = formatISO(new Date());
 
     return iterateAllResources({
@@ -116,7 +119,10 @@ export class MonitorClient extends Client {
         list: async () =>
           serviceClient.activityLogs.list(
             `eventTimestamp ge '${startDate}' and eventTimestamp le '${endDate}' and resourceUri eq '${resourceId}'`,
+            { select: options?.select },
           ),
+        listNext: async (nextPageLink) =>
+          serviceClient.activityLogs.listNext(nextPageLink),
       },
       resourceDescription: 'monitor.activityLogs',
       callback,
