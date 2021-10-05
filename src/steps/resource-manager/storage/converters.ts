@@ -59,8 +59,8 @@ export function createStorageAccountEntity(
     blob?: BlobServiceProperties;
     queue?: QueueServiceProperties;
     table?: TableServiceProperties;
+    lastAccessKeyRegenerationDate?: Date;
   },
-  isAccessKeyRegenerated: boolean,
 ): Entity {
   const encryptedServices = data.encryption?.services;
   const tableLogging =
@@ -126,13 +126,14 @@ export function createStorageAccountEntity(
         tableAnalyticsLoggingReadEnabled: tableLogging?.Read[0] === 'true',
         tableAnalyticsLoggingWriteEnabled: tableLogging?.Write[0] === 'true',
         tableAnalyticsLoggingDeleteEnabled: tableLogging?.Delete[0] === 'true',
+        lastAccessKeyRegenerationDate:
+          storageAccountServiceProperties.lastAccessKeyRegenerationDate,
         ...flatten({
           encryption: {
             keySource: data.encryption?.keySource,
             keyVaultProperties: data.encryption?.keyVaultProperties,
           },
         }),
-        isAccessKeyRegenerated,
       },
       tagProperties: ['environment'],
     },
