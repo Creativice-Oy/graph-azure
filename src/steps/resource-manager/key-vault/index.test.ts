@@ -37,18 +37,17 @@ describe('step = key vaults', () => {
     recording = setupAzureRecording({
       directory: __dirname,
       name: 'resource-manager-step-key-vaults',
+      options: {
+        matchRequestsBy: getMatchRequestsBy({
+          config: configFromEnv,
+        }),
+      },
     });
 
-    const instanceConfig = {
-      ...configFromEnv,
-      directoryId: '19ae0f99-6fc6-444b-bd54-97504efc66ad',
-      subscriptionId: '193f89dc-6225-4a80-bacb-96b32fbf6dd0',
-    };
-
     const context = createMockAzureStepExecutionContext({
-      instanceConfig: instanceConfig,
+      instanceConfig: configFromEnv,
       setData: {
-        [ACCOUNT_ENTITY_TYPE]: getMockAccountEntity(instanceConfig),
+        [ACCOUNT_ENTITY_TYPE]: getMockAccountEntity(configFromEnv),
       },
     });
 
