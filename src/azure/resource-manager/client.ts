@@ -274,6 +274,7 @@ export async function request<T extends ResourceResponse>(
     if (err.statusCode === 404) {
       logger.warn({ err }, 'Resources not found');
     } else {
+      console.log(err);
       if (err instanceof AzureRestError) {
         throw new IntegrationProviderAPIError({
           cause: err,

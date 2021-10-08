@@ -1,3 +1,4 @@
+jest.setTimeout(500000);
 import {
   fetchStorageAccounts,
   fetchStorageQueues,
@@ -58,11 +59,11 @@ describe('rm-storage-accounts', () => {
       options: {
         matchRequestsBy: getMatchRequestsBy({
           config: configFromEnv,
-          options: {
-            url: {
-              query: false,
-            },
-          },
+          // options: {
+          //   url: {
+          //     query: false,
+          //   },
+          // },
         }),
       },
     });
@@ -70,14 +71,19 @@ describe('rm-storage-accounts', () => {
     const { accountEntity, keyVaultEntity } = await getSetupEntities();
 
     const context = createMockAzureStepExecutionContext({
-      instanceConfig: configFromEnv,
+      instanceConfig: {
+        ...configFromEnv,
+        subscriptionId: '193f89dc-6225-4a80-bacb-96b32fbf6dd0',
+      },
       entities: [keyVaultEntity],
       setData: {
         [ACCOUNT_ENTITY_TYPE]: accountEntity,
       },
     });
 
+    console.log(1);
     await fetchStorageAccounts(context);
+    console.log(2);
 
     const storageAccountEntities = context.jobState.collectedEntities;
 
