@@ -20,7 +20,7 @@ import {
 import { createAppEntity, createAppServicePlanEntity } from './converters';
 import { Site } from '@azure/arm-appservice/esm/models';
 import createResourceGroupResourceRelationship from '../utils/createResourceGroupResourceRelationship';
-import { STEP_RM_RESOURCES_RESOURCE_GROUPS } from '../resources';
+import { STEP_RM_RESOURCES_RESOURCE_GROUPS } from '../resources/constants';
 
 export async function fetchApps(
   executionContext: IntegrationStepContext,
