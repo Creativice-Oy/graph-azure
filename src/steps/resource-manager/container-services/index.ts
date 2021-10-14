@@ -61,7 +61,7 @@ export const containerServicesSteps: Step<
       ContainerServicesRelationships.RESOURCE_GROUP_HAS_CLUSTER,
       ContainerServicesRelationships.CLUSTER_HAS_NODE_POOL,
     ],
-    dependsOn: [],
+    dependsOn: [STEP_AD_ACCOUNT],
     executionHandler: fetchClusters,
   },
 ];
