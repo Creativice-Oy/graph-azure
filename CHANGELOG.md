@@ -8,6 +8,45 @@ and this project adheres to
 
 ## [Unreleased]
 
+### Added
+
+- Added support for ingesting the following **new** resources:
+
+  | Service          | Resource / Entity       |
+  | ---------------- | ----------------------- |
+  | Key Vault Key    | `azure_keyvault_key`    |
+  | Key Vault Secret | `azure_keyvault_secret` |
+
+- With the following properties:
+
+  | Entity                  | Properties                                                                                                                                                  |
+  | ----------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+  | `azure_keyvault_key`    | `name`, `recoveryLevel`, `vaultUrl`, `version`, `enabled`, `notBefore`, `createdOn`, `updatedOn`, `expiresOn`                                               |
+  | `azure_keyvault_secret` | `name`, `recoveryLevel`, `vaultUrl`, `version`, `contentType`, `certificateKeyId`, `managed`, `enabled`, `notBefore`, `createdOn`, `updatedOn`, `expiresOn` |
+
+### Fixed
+
+- Suppressed `FeatureNotSupportedForAccount` and `AccountIsDisabled` errors when
+  attempting to list tables, queues, blobs, and file shares for storage accounts
+- Add `errorCode` and `errorName` to blob & queue service properties calls
+- Fixed a bug that occurs when paginating
+  Microsoft.Compute/galleries/${galleryId}/images/${imageId}/versions
+
+## [5.33.0] - 2021-10-15
+
+### Added
+
+- New properties added to resources:
+
+  | Entity                                | Properties                                                                                                                                                                 |
+  | ------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+  | `azure_web_app`, `azure_function_app` | `authEnabled`, `httpsOnly`, `minTlsVersion`, `clientCertEnabled`, `principalId`, `phpVersion`, `pythonVersion`, `javaVersion`, `nodeVersion`, `http20Enabled`, `ftpsState` |
+  | `azure_sql_server`                    | `vaRecurringScansEnabled`, `vaStoragePath`, `vaEmailSubscriptionAdmins`, `vaEmails`                                                                                        |
+
+  Note: fetching settings for `azure_web_app` and `azure_function_app` requires
+  additional permission to be added to the custom role:
+  `Microsoft.Web/sites/config/list/Action`
+
 ## [5.32.0] - 2021-10-04
 
 ### Added
